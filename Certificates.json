@@ -1,0 +1,63 @@
+{
+  "Title": "CERTIFICATES",
+  "ListItems": [
+    {
+      "Item": "Microsoft Certified: Azure Fundamentals",
+      "Child": "MICROSOFT - (07/2022 - Present)"
+    },
+    {
+      "Item": "Microsoft Azure Management Tools and Security",
+      "Child": "COURSERA - (06/2022 - Present)"
+    },
+    {
+      "Item": "DevOps Essentials",
+      "Child": "IBM - (05/2022 - Present)"
+    },
+    {
+      "Item": "Leadership in 21st Century Organizations",
+      "Child": "Copenhagen Business School - (04/2022 - Present)"
+    },
+    {
+      "Item": "Microsoft Azure Services and Lifecycles",
+      "Child": "COURSERA - (07/2022 - Present)"
+    },
+    {
+      "Item": "DevOps Essentials",
+      "Child": "IBM - (05/2022 - Present)"
+    },
+    {
+      "Item": "API Product Manager",
+      "Child": "API Academy"
+    },
+    {
+      "Item": "Neural Networks and Deep Learning",
+      "Child": "COURSERA - (06/2021 - Present)"
+    },
+    {
+      "Item": "Fundamentals of Network Communication",
+      "Child": "University of Colorado - (06/2021 - Present)"
+    },
+    {
+      "Item": "Wireless Networking 101",
+      "Child": "Homemation - (06/2020 - Present)"
+    },
+    {
+      "Item": "Security Intelligence Engineer",
+      "Child": "IBM - (02/2020 - Present)"
+    },
+    {
+      "Item": "Information Security Awareness",
+      "Child": "FORTINET - (02/2021 - Present)"
+    },
+    {
+      "Item": "Network Security Awareness",
+      "Child": "FORTINET - (01/2021 - Present)"
+    },
+    {
+      "Item": "Microsoft Azure Services and Lifecycles",
+      "Child": "COURSERA - (07/2022 - Present)"
+    }
+
+  ]
+
+}
