@@ -85,7 +85,7 @@ jobs:
         # exclusions: '*.git* /*node_modules/* .editorconfig'
 
     - name: See what's going on in Directory
-    - uses: knicknic/os-specific-run@v1.0.3
+      uses: knicknic/os-specific-run@v1.0.3
       with:
         macos: pwd; ls -al; find .
         linux: pwd; ls -al; find .
