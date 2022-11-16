@@ -73,3 +73,10 @@ jobs:
         name: Application Artifact  # will be zipped automatically
         path: bin/release/net6.0/
       # Use always() to always run this step to publish test results when there are test failures
+    - name: Release the artifacts
+      uses: skx/github-action-publish-binaries@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: 'Release-*'
+  
