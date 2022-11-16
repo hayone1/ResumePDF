@@ -85,12 +85,11 @@ jobs:
         # exclusions: '*.git* /*node_modules/* .editorconfig'
 
     - name: See what's going on in Directory
-      run:  |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-            Get-ChildItem -Recurse
-        else 
-            pwd; ls -al; find .
-
+    - uses: knicknic/os-specific-run@v1.0.3
+      with:
+        macos: pwd; ls -al; find .
+        linux: pwd; ls -al; find .
+        windows: Get-ChildItem -Recurse
 
     - name: "Check file existence"
       uses: andstor/file-existence-action@v2
