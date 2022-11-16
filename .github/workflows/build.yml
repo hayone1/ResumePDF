@@ -71,5 +71,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Application Artifact  # will be zipped automatically
-        path: bin/release/net6.0/*.*
+        path: bin/release/net6.0/
       # Use always() to always run this step to publish test results when there are test failures
