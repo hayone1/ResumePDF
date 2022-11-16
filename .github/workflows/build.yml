@@ -109,5 +109,5 @@ jobs:
         draft: false
         prerelease: true
         generateReleaseNotes: true
-        # tag: ${{ github.ref }}
+        tag: 'v*'
   
