@@ -73,11 +73,13 @@ jobs:
         name: ResumePDF  # will be zipped automatically
         path: bin/Debug/net6.0/
 
-    - name: Install zip
-      uses: montudor/action-zip@v1
-
-    - name: Zip output
-      run: zip -qq -r resume.zip bin/Debug/net6.0
+    - name: Archive Release
+      uses: thedoctor0/zip-release@main
+      with:
+        type: 'zip'
+        filename: $'{{matrix.os}}Resume.zip'
+        directory: bin/Debug/net6.0
+        # exclusions: '*.git* /*node_modules/* .editorconfig'
 
     - name: See what's going on
       run: pwd; ls -al; find .
@@ -86,17 +88,17 @@ jobs:
     - name: "Check file existence"
       uses: andstor/file-existence-action@v2
       with:
-        files: "ResumePDF.zip, resume.zip"
+        files: "ResumePDF.zip, Resume.zip"
 
-    - name: File exists
-      if: steps.check_files.outputs.files_exists == 'true'
-      # Only runs if all of the files exists
-      run: echo All files exists!
-    
-    # - name: Release the artifacts
-    #   uses: skx/github-action-publish-binaries@master
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     args: 'Release-*'
+    - name: Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+        name: "BuildRelease"
+        artifacts: "./Resume.zip"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: true
+        body: "Quest PDF"
+        draft: true
+        prerelease: false
+        tag: ${{ github.ref }}
   
