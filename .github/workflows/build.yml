@@ -109,5 +109,5 @@ jobs:
         draft: false
         prerelease: true
         generateReleaseNotes: true
-        tag: 'v*'
+        tag: v0.1.0
   
