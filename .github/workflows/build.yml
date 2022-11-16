@@ -77,7 +77,7 @@ jobs:
       uses: thedoctor0/zip-release@main
       with:
         type: 'zip'
-        filename: $'{{matrix.os}}Resume.zip'
+        filename: 'Resume.zip'
         directory: bin/Debug/net6.0
         # exclusions: '*.git* /*node_modules/* .editorconfig'
 
@@ -94,7 +94,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         name: "BuildRelease"
-        artifacts: "./Resume.zip"
+        artifacts: "./bin/Debug/net6.0/Resume.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
         body: "Quest PDF"
