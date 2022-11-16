@@ -126,28 +126,6 @@ namespace ResumePDF
 
     }
 
-    //internal class OrdersTableComponent : IDynamicComponent<OrdersTableState>
-    //{
-    //    public OrdersTableState State { get; set; }
-    //    public InvoiceModel Model { get; }
-
-    //    public OrdersTableComponent(InvoiceModel model)
-    //    {
-    //        Model = model;
-
-    //        State = new OrdersTableState
-    //        {
-    //            ShownItemsCount = 0,
-    //        };
-    //    }
-
-    //    public DynamicComponentComposeResult Compose(DynamicContext context)
-    //    {
-    //        // find out the highest number of rows that fit in a page
-    //        var possibleItems = Enumerable.Range(1, Model.Items.Count - State.ShownItemsCount)
-    //                                      .Select(itemstoDisplay => )
-    //    }
-    //}
 
     internal class DecorComponent : IComponent
     {
@@ -180,7 +158,7 @@ namespace ResumePDF
     {
         protected readonly float leftRatio = 0.15f;   //ratio the left side of the bulleted component takes
         protected readonly float LeftpaddingRight = 12f;    //right padding for the left column
-        protected const float LeftHeight = 50f; //height of bullet that is on the left side
+        protected const float LeftHeight = 40f; //height of bullet that is on the left side
         public string PrimaryColor { get; init; } = Colors.Black;
         public string AccentColor { get; init; } = Colors.Blue.Accent2;
 
@@ -206,7 +184,7 @@ namespace ResumePDF
                    .PaddingRight(LeftpaddingRight)
                    //.PaddingTop(20)
                    .Height((float)LeftHeight)
-                   .Background(AccentColor);
+                   .Background(PrimaryColor);
 
                 //right side - the brief
                 row.RelativeItem()
@@ -228,57 +206,74 @@ namespace ResumePDF
 
         }
     }
-    internal class BulletComponent : BulletBase, IComponent
+    internal class BulletsComponent : BulletBase, IComponent
     {
         public string AccentColor { get; init; } = Colors.Blue.Accent2;
 
-        public BulletModel? bulletModel { get; init; }
+        public BulletsModel? bulletsModel { get; init; }
         public void Compose(IContainer container)
         {
-            container.Row(row =>
+            //column to place bullets
+            container.Column(column =>
             {
-                //left side - Bullet
-                row.RelativeItem(leftRatio)
-                   //.AlignTop()
-                   //.DebugArea()
-                   .PaddingRight(LeftpaddingRight)
-                   .Height(LeftHeight)
-                   .Background(AccentColor);
-                   //.Border(1)
+                //each bullet data will take a row
+                foreach (var bulletModel in bulletsModel.Bullets)
+                { column.Item().ShowEntire().Element(container =>
+                {
+                    //each row has 2 columns | left(bullet) & right(text)
+                    container.Row(row =>
+                    {
+                        //left side - Bullet
+                        row.RelativeItem(leftRatio)
+                           //.AlignTop()
+                           //.DebugArea()
+                           .PaddingRight(LeftpaddingRight)
+                           .Height(LeftHeight)
+                           .Background(AccentColor);
+                        //.Border(1)
 
-                //right side
-                row.RelativeItem()
-                   //.Background(Colors.Grey.Lighten2)
-                   .Text(text =>
-                   {
-                       text.DefaultTextStyle(TypographyStyles.Normal);
-                       text.AlignLeft();
-                       text.ParagraphSpacing(1);
-                       //headline
-                       text.Line(bulletModel.Qualification).Style(TypographyStyles.Headline);
-                       //headline2
-                       text.Line(bulletModel.Company).Style(TypographyStyles.Headline2);
+                        //right side - Text
+                        row.RelativeItem()
+                           //.Background(Colors.Grey.Lighten2)
+                           .Text(text =>
+                           {
+                               text.DefaultTextStyle(TypographyStyles.Normal);
+                               text.AlignLeft();
+                               text.ParagraphSpacing(1);
+                               //headline
+                               text.Line(bulletModel.Qualification).Style(TypographyStyles.Headline);
+                               //headline2
+                               text.Line(bulletModel.Company).Style(TypographyStyles.Headline2);
 
-                       text.Span($"{bulletModel.Duration.start} - {bulletModel.Duration.end}")
-                           .Style(TypographyStyles.AccentStyle);
-                       text.Span("                                                  ");
-                       text.Span(bulletModel.Location)
-                           .Style(TypographyStyles.AccentStyle);
-                       text.EmptyLine();
-                       text.Line(bulletModel.SubTitle)
-                           .Style(TypographyStyles.AccentStyle2);
+                               text.Span($"{bulletModel.Duration.start} - {bulletModel.Duration.end}")
+                                   .Style(TypographyStyles.AccentStyle);
+                               text.Span(" | ");
+                               //text.Span("                                                  ");
+                               text.Span(bulletModel.Location)
+                                   .Style(TypographyStyles.AccentStyle);
+                               text.EmptyLine();
+                               text.Line(bulletModel.SubTitle)
+                                   .Style(TypographyStyles.AccentStyle2);
 
-                       foreach (var paragraph in bulletModel.paragraphs)
-                       {
-                           //text.Span("◉ ").FontColor(AccentColor);
-                           text.Span("◉ ").Style(TypographyStyles.AccentStyle);
-                           text.Span(paragraph);
-                           text.EmptyLine();
-                       }
+                               //inner bullets paragraphs
+                               foreach (var paragraph in bulletModel.paragraphs)
+                               {
+                                   //text.Span("◉ ").FontColor(AccentColor);
+                                   text.Span("• ").FontColor(AccentColor);
+                                   //text.Span(" ").Style(TypographyStyles.AccentStyle);
+                                   text.Span(paragraph).FontSize(9.5f);
+                                   text.EmptyLine();
+                               }
 
-                   });
+                           });
+                    });
+                }); 
+                }
+
             });
+
         }
+
     }
 
     internal class ContactComponent : IComponent
@@ -303,8 +298,8 @@ namespace ResumePDF
                          {
                              //Console.WriteLine("Icon Text is: " + item.Text);
                              byte[] iconImage;
-                             iconImage = File.ReadAllBytes("Images/web.png");
-                                //iconImage = HttpHelper.DownloadFileAsync(item.IconLink).Result;
+                             iconImage = File.ReadAllBytes(item.IconLink);
+                            //iconImage = HttpHelper.DownloadFileAsync(item.IconLink).Result;   //read from internet version
                              //try
                              //{
                              //}
@@ -314,9 +309,13 @@ namespace ResumePDF
                              //}
 
 
-                             table.Cell().MinHeight(25)
+                             table.Cell().Height(25)
                                          //.Border(1)
-                                         .Element(IconBlock)
+                                         //.Height(18)
+                                         .Width(15)
+                                         //.AlignCenter()
+                                         .AlignTop()
+                                         //.AlignMiddle()
                                          .Image(iconImage, ImageScaling.FitArea);
                              table.Cell().Hyperlink(item.Link)
                                          .Text(item.Text)
@@ -345,7 +344,7 @@ namespace ResumePDF
     {
         [Required]
         public HighlightModel highlightItems = new();
-        //max no of characters the conponent can contain without wrapping
+        //max no of characters the component can contain without wrapping
         const int maxChar = 64;
         const int columnNo = 20; //there is maximum of 2 items per row
         public void Compose(IContainer container)
@@ -371,12 +370,6 @@ namespace ResumePDF
                     int columnCount = (item.Count() * columnNo / maxChar) + 2;
                     //Console.WriteLine("Column count: " + (uint)columnCount + $": {item}");
 
-                    //table.Cell()
-                    //     .ColumnSpan((uint)columnCount)
-                    //     //.Text(item).FontSize(9);
-                    //     .Background(Colors.Grey.Darken2)
-                    //     .Height(20);
-
                     //fill cells with highlights
                     table.Cell()
                          .ColumnSpan((uint)columnCount)
@@ -392,16 +385,16 @@ namespace ResumePDF
                                   //.AlignTop()
                                   .Canvas((canvas, size) =>
                             {
-                                DrawRoundedRectangle(highlightItems.Color, size, canvas);
+                                DrawRoundedRectangle(highlightItems.Color, size, canvas, highlightItems.IsStroke);
                             });
-                            layers.PrimaryLayer()
-                                    //.PaddingVertical(5)
-                                    //.PaddingHorizontal(5)
-                                    .AlignMiddle()
-                                    .AlignCenter()
-                                    .Text(item)
-                                    .FontColor(Colors.White)
-                                    .FontSize(9);
+                             layers.PrimaryLayer()
+                                     //.PaddingVertical(5)
+                                     //.PaddingHorizontal(5)
+                                     .AlignMiddle()
+                                     .AlignCenter()
+                                     .Text(item).Style(TypographyStyles.Normal)
+                                     .FontColor(highlightItems.IsStroke ? Colors.Black : Colors.White);
+                                    //.FontSize(9);
                          });
                 }
             });
@@ -413,7 +406,7 @@ namespace ResumePDF
             {
                 Color = SKColor.Parse(color),
                 IsStroke = isStroke,
-                StrokeWidth = 2,
+                StrokeWidth = 1,
                 IsAntialias = true
             };
 
@@ -427,29 +420,15 @@ namespace ResumePDF
         public ListModel BasicList = new();
         public void Compose(IContainer container)
         {
-            //container.DebugArea().MinimalBox().Text(text =>
-            //{
-            //    foreach (var listItem in BasicList.ListItems)
-            //    {
-            //        text.DefaultTextStyle(TypographyStyles.Normal.FontSize(10));
-            //        text.Line(listItem.Item);
-            //        text.Line(listItem.Child);
-            //        text.Line("").LineHeight(0.1f);
-            //        text.Line(listItem.Child);
-            //        //text.ParagraphSpacing(-5f);
-
-            //    }
-            //});
-
 
             container.Column(column =>
              {
                  column.Spacing(5);
                  foreach (var listItem in BasicList.ListItems)
                  {
-                     column.Item().Text($"{listItem.Item}\n" +
+                     column.Item().ShowEntire().Text($"{listItem.Item}\n" +
                                            listItem.Child)
-                                  .Style(TypographyStyles.Normal.FontSize(10));
+                                               .Style(TypographyStyles.Normal.FontSize(10));
                      //column.Item().DebugArea()
                      //             .Text(text =>
                      //{

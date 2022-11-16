@@ -1,0 +1,46 @@
+[
+  {
+    "Company": "TecnoTree Nigeria",
+    "Duration": {
+      "start": "11/2021",
+      "end": "Present"
+    },
+    "Location": "Victoria Island, Lagos",
+    "SubTitle": "Achievements/Tasks",
+    "paragraphs": [
+      "Currently create value with Tecnotree Nigeria via provisioning and maintenance of various backend and customer-facing services for MTN Nigeria including CRM, CLM and whole sale billing services.",
+      "Collaborated with teammates to design a future proof and scalable solution that provides and automatic and seamless payment option for MTN postpaid customers.",
+      "Facilitated the launch of a new blended learning solution actively participating in diagnosis and debugging while conducting UAT tests, resulting in a well rounded solution which we names MOMENTS.",
+      "Productively Contributed to various updates, clarification and stakeholders meetings, generally resulting in better stakeholder management and client relations."
+    ]
+  },
+  {
+    "Qualification": "Home Automation Intern",
+    "Company": "HomeTronix Nigeria",
+    "Duration": {
+      "start": "11/2021",
+      "end": "12/2020"
+    },
+    "Location": "Victoria Island, Lagos",
+    "SubTitle": "Achievements/Tasks",
+    "paragraphs": [
+      "Worked on various research reports, presentations, process documentation; greatly improving workflow standardization.",
+      "Planned, designed and installed automation equipment to create unforgettable experiences for clients using cutting edge smart home technology including intelligent lighting, Distributed audio and video, advanced security, and remote access."
+    ]
+  },
+  {
+    "Qualification": "Member of Student Council",
+    "Company": "Covenant University",
+    "Duration": {
+      "start": "19/2018",
+      "end": "09/2021"
+    },
+    "Location": "Ota",
+    "SubTitle": "Achievements/Tasks",
+    "paragraphs": [
+      "Collaborated with school the school managemen and students to enact new policies and strengthen old ones. This improved the overall student experience and qualit of life withing the campus",
+      "Planned, facilitated and coordinated various extracurricular prof=grams grared towards students' academic and lifestyle improvement"
+    ]
+  }
+
+]

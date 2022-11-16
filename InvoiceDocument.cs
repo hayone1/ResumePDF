@@ -15,12 +15,12 @@ namespace ResumePDF
         public InvoiceDocument()
         {
             //Model = model;
-            foreach (var font in fonts)
-            {
-                //Console.WriteLine("Font locationo is" + font);
-                FontManager.RegisterFont(File.OpenRead(font));
+            //foreach (var font in fonts)
+            //{
+            //    //Console.WriteLine("Font locationo is" + font);
+            //    FontManager.RegisterFont(File.OpenRead(font));
 
-            }
+            //}
 
         }
 
@@ -33,11 +33,14 @@ namespace ResumePDF
                 page.Header().Element(ComposeHeader);
                 page.Content().Element(ComposeContent);
 
-                page.Footer().AlignCenter().Text(x =>
-                {
-                    x.CurrentPageNumber();
-                    x.Span(" / "); x.TotalPages();
-                });
+                page.Footer().AlignCenter()
+                             .Text("References - available on request")
+                             .Style(TypographyStyles.Normal);
+                //page.Footer().AlignCenter().Text(x =>
+                //{
+                //    x.CurrentPageNumber();
+                //    x.Span(" / "); x.TotalPages();
+                //});
             });
         }
 
@@ -59,7 +62,7 @@ namespace ResumePDF
                         {
                             //Left Side - Resume Brief
                             row.RelativeItem(LeftRatio)
-                               .Component(DataSource.BriefComponent);
+                               .Component(DataSource.LeftHeader);
 
                             //row.ConstantItem(100).Height(50).Placeholder();
                             //Right Side - Contact information
@@ -67,7 +70,7 @@ namespace ResumePDF
                                 //.Height(100)
                                 .AlignRight()
                                 //.Component(new LoremPicsum(false));
-                                .Component(DataSource.ContactsComponent);
+                                .Component(DataSource.RightHeader);
 
                         });
 
@@ -83,95 +86,131 @@ namespace ResumePDF
         {
             //container.PaddingVertical(10)
             const float left_RightPadding = 10f;
+            const float generalPadding = 10f;
             
             container.BorderTop(1)
                      //.Height(50)
                      //.Background(Colors.Grey.Lighten3)
                      //.AlignCenter()
-                     .PaddingTop(10)
+                     .PaddingTop(generalPadding)
                      //.AlignMiddle()
                      .Row(row =>
                      {
-                         //Left side of Resume
+                         //Left side of Resume Content
                          row.RelativeItem(LeftRatio)
+                            .PaddingRight(generalPadding)
                             //.Background(Colors.Grey.Lighten1)
                             .Column(column =>
                             {
-                                //For Education
-                                column.Item().Decoration(decoration =>
+                                column.Spacing(generalPadding);
+                                foreach (var leftItem in DataSource.ReadLeftContent())
                                 {
-                                    //title
-                                    decoration.Before()
-                                              .PaddingRight(left_RightPadding).Text("            " + "Education")
-                                              .Style(TypographyStyles.Title2);
-                                    //body
-                                    decoration.Content()
-                                              .Element(showEduBullets);
-
-                                void showEduBullets(IContainer container)
-                                {
-                                    //inner column to place bullets
-                                    container.Column(column =>
+                                    //For Education - Row 1
+                                    column.Item().Decoration(decoration =>
                                     {
-                                        //DataSource.EducationComponent
-                                        //          .ForEach(bitem => column.Item().ShowEntire().PaddingRight(10).Component(bitem));
-                                        foreach (var bulletItem in DataSource.EducationComponent)
-                                        {column.Item().ShowEntire().PaddingRight(10).Component(bulletItem);}
+                                        //title
+                                        decoration.Before()
+                                                  .PaddingRight(left_RightPadding).Text("            " + leftItem.Title)
+                                                  .Style(TypographyStyles.Title2);
+                                        //body
+                                        decoration.Content()
+                                                  .PaddingRight(left_RightPadding)
+                                                  .Component(leftItem.component);
 
+                                
                                     });
 
                                 }
-                                });
-                                //render education components
-                                    //column.Item().PaddingRight(left_RightPadding).Text("            " +"Education").Style(TypographyStyles.Title2);
-                                //foreach (var bulletItem in DataSource.EducationComponent)
+
+                                //for work experience - Row 2
+                                //column.Item().Decoration(decoration =>
                                 //{
-                                //    column.Item().ShowEntire().PaddingRight(10).Component(bulletItem);
-                                //}
+                                //    //title
+                                //    decoration.Before()
+                                //              .PaddingRight(left_RightPadding)
+                                //              .Text("            " + "WORK EXPERIENCE")
+                                //              .Style(TypographyStyles.Title2);
+                                //    //body
+                                //    decoration.Content()
+                                //              .Element(showExpBullets);
 
+                                //    void showExpBullets(IContainer container)
+                                //    {
+                                //        //inner column to place bullets
+                                //        container.Column(column =>
+                                //        {
+                                //            //DataSource.EducationComponent
+                                //            //          .ForEach(bitem => column.Item().ShowEntire().PaddingRight(10).Component(bitem));
+                                //            foreach (var bulletItem in DataSource.WorkExperienceComponent)
+                                //            { column.Item().ShowEntire().PaddingRight(10).Component(bulletItem); }
 
-                                //For work experience
-                                column.Item().PaddingRight(left_RightPadding).Text("            "+"WORK EXPERIENCE").Style(TypographyStyles.Title2);
-                                foreach (var bulletItem in DataSource.WorkExperienceComponent)
-                                {
-                                    column.Item().PaddingRight(10).Component(bulletItem);
+                                //        });
 
-                                }
+                                //    }
+                                //});
+
 
                             });
 
-                         //right side of resume
+                         //right side of resume content
                          row.RelativeItem()
-                            .PaddingRight(10)
+                            .PaddingRight(generalPadding)
                             //.Background(Colors.Grey.Lighten1)
                             .Column(column =>
                             {
-                                //Skills section
-                                column.Item().Decoration(decoration =>
-                                {
-                                    //title
-                                    decoration.Before()
-                                              .Text(DataSource.SkillsComponent.highlightItems.Title)
-                                              .Style(TypographyStyles.Title2);
-                                    //body
-                                    decoration.Content()
-                                              .Component(DataSource.SkillsComponent);
-                                });
+                                column.Spacing(generalPadding);
+                                foreach (var rightItem in DataSource.ReadRightContent())
+                                { 
+                                    //Skills section
+                                    column.Item().Decoration(decoration =>
+                                    {
+                                        //title
+                                        decoration.Before()
+                                                  .Text(rightItem.Title)
+                                                  .Style(TypographyStyles.Title2);
+                                        //body
+                                        decoration.Content()
+                                                  .Component(rightItem.component);
+                                    });
+
+                                }
+
                                 //Certificates section
-                                column.Item().Decoration(decoration =>
-                                {
-                                    //title
-                                    decoration.Before()
-                                              .Text(DataSource.CertificatesComponent.BasicList.Title)
-                                              .Style(TypographyStyles.Title2);
-                                    //body
-                                    decoration.Content()
-                                              .Component(DataSource.CertificatesComponent);
-                                });
-                                //column.Item().Text(DataSource.CertificatesComponent.BasicList.Title)
-                                //             .Style(TypographyStyles.Title2);   //title
-                                //column.Item().Component(DataSource.CertificatesComponent);  //body
+                                //column.Item().Decoration(decoration =>
+                                //{
+                                //    //title
+                                //    decoration.Before()
+                                //              .Text(DataSource.CertificatesComponent.BasicList.Title)
+                                //              .Style(TypographyStyles.Title2);
+                                //    //body
+                                //    decoration.Content()
+                                //              .Component(DataSource.CertificatesComponent);
+                                //});
+                                ////Personal Projects section
+                                //column.Item().Decoration(decoration =>
+                                //{
+                                //    //title
+                                //    decoration.Before()
+                                //              .Text(DataSource.ProjectsComponent.BasicList.Title)
+                                //              .Style(TypographyStyles.Title2);
+                                //    //body
+                                //    decoration.Content()
+                                //              .Component(DataSource.ProjectsComponent);
+                                //});
+                                ////Interests section
+                                //column.Item().Decoration(decoration =>
+                                //{
+                                //    //title
+                                //    decoration.Before()
+                                //              .Text(DataSource.InterestsComponent.highlightItems.Title)
+                                //              .Style(TypographyStyles.Title2);
+                                //    //body
+                                //    decoration.Content()
+                                //              .Component(DataSource.InterestsComponent);
+                                //});
                             });
+                         
+                         //Text at the bottom 
                      });
 
         }

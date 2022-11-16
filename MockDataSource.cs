@@ -1,6 +1,9 @@
-﻿using QuestPDF.Helpers;
+﻿using Newtonsoft.Json;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -55,54 +58,91 @@ namespace ResumePDF
 
     internal static class DataSource
     {
-        //public static BulletComponent[] ContentBullets = new BulletComponent[]
-        //{
-        //    new BulletComponent(){ bulletModel = TecnotreeSystems },
-        //    new BulletComponent(){ bulletModel = TecnotreeSystems }
-        //};
-        //public static BulletModel TecnotreeSystems =>
-        //new BulletModel
-        //{
-        //    //Title = "WORK EXPERIENCE",
-        //    Qualification = "Systems Integrator Intern",
-        //    Company = "TecnoTree Nigeria",
-        //    Duration = new("11 / 2021", "Present"),
-        //    Location = "Victoria Island, Lagos",
-        //    SubTitle = "Achievements/Tasks",
-        //    paragraphs = new string[]
-        //    {
-        //        "Currently create value with Tecnotree Nigeria via\r\nprovisioning and maintenance of various backend and\r\ncustomer-facing services for MTN Nigeria including CRM, CLM and whole sale billing services.\n",
-        //        "Collaborated with teammates to design a future proof\r\nand scalable solution that provides and automatic and\r\nseamless payment option for MTN postpaid customers.\n",
-        //        "Facilitated the launch of a new blended learning solution\r\nactively participating in diagnosis and debugging while\r\nconducting UAT tests, resulting in a well rounded\r\nsolution which we names MOMENTS.\n",
-        //        "Productively Contributed to various updates, clarification\r\nand stakeholders meetings, generally resulting in better\r\nstakeholder management and client relations."
-        //    }
-        //};
+        public static IComponent LeftHeader
+            = Utils.JsonToComponent(Utils.ReturnFirstFile(@"Data\HeaderLeft\", "*.json"));
+            //= Utils.JsonToComponent("Data/HeaderLeft/Brief.json");
 
-        
-        private static BulletModelSimple? Brief = Utils.ReadJson<BulletModelSimple>("Brief.json");
-        public static BulletSimpleComponent BriefComponent = new BulletSimpleComponent() { SimpleBulletModel = Brief };
+        public static IComponent RightHeader
+            = Utils.JsonToComponent(Utils.ReturnFirstFile(@"Data\HeaderRight\", "*.json"));
 
-        private static BulletModel[]? Education = Utils.ReadJson<BulletModel[]>("Education.json");
-        public static BulletComponent[]? EducationComponent
-                => Education?.Select(model => new BulletComponent() { bulletModel = model }).ToArray();
+        public static IEnumerable<(string Title, IComponent component)> ReadLeftContent()
+        {
+            string[] files = Directory.GetFiles(@"Data\ContentLeft\", "*.json");
+            Array.Sort(files);
+            foreach (var file in files)
+            {
+                //add component to collection if it is not null
+                if (Utils.JsonToComponent(file) is IComponent component && component is not null)
+                {
+                    Console.WriteLine("Null check: " + (component == null));
+                    Console.WriteLine("Null check is: " + (component is null));
+                    var JsonName = file.BetweenStrings("-", ".json");
+                    Console.WriteLine("Left Json Name : " + JsonName);
+                    yield return (JsonName, component);
 
+                }
+                else
+                {
+                    Console.WriteLine("We got a wrong format file on the left side");
+                }
+            }
 
-        private static BulletModel[]? WorkExperience = Utils.ReadJson<BulletModel[]>("WorkExperience.json");
-        public static BulletComponent[]? WorkExperienceComponent 
-                => WorkExperience?.Select(model => new BulletComponent() { bulletModel = model }).ToArray();
-
-        private static ContactModel[]? Contacts = Utils.ReadJson<ContactModel[]>("Contacts.json");
-        public static ContactComponent ContactsComponent = new() { contactItems = Contacts };
-
-        //public static BulletModel[]? WorkExperience => JsonSerializer.Deserialize<BulletModel[]>("WorkExperience.json");
-        private static HighlightModel? Skills = Utils.ReadJson<HighlightModel>("Skills.json");
-        public static HighlightedItemsComponent SkillsComponent = new() { highlightItems = Skills };
-
-        private static ListModel? Certificates = Utils.ReadJson<ListModel>("Certificates.json");
-        public static BasicListComponent CertificatesComponent = new() { BasicList = Certificates };
-
-            //static string fileName = ;
         }
+
+        public static IEnumerable<(string Title, IComponent component)> ReadRightContent()
+        {
+            string[] files = Directory.GetFiles(@"Data\ContentRight\", "*.json");
+            Array.Sort(files);
+            foreach (var file in files)
+            {
+                //add component to collection if it is not null
+                if (Utils.JsonToComponent(file) is IComponent component && component is not null)
+                {
+                    Console.WriteLine("Right Null check: " + (component == null));
+                    Console.WriteLine("Right Null check is: " + (component is null));
+                    var JsonName = file.BetweenStrings("-", ".json");
+                    Console.WriteLine("Right Json Name : " + JsonName);
+                    yield return (JsonName, component);
+
+                }
+                else
+                {
+                    Console.WriteLine("We got a wrong format file on the right side");
+                }
+            }
+
+        }
+
+        //private static BulletModelSimple? Brief = Utils.ReadJson<BulletModelSimple>("Data/Brief.json");
+        //public static BulletSimpleComponent BriefComponent = new BulletSimpleComponent() { SimpleBulletModel = Brief };
+
+        //private static BulletsModel? Education = Utils.ReadJson<BulletsModel>("Data/ContentLeft/1-Education.json");
+        //public static BulletComponent[]? EducationComponent
+        //        => Education?.Select(model => new BulletComponent() { bulletModel = model }).ToArray();
+
+
+        //private static BulletModel[]? WorkExperience = Utils.ReadJson<BulletModel[]>("Data/WorkExperience.json");
+        //public static BulletComponent[]? WorkExperienceComponent 
+        //        => WorkExperience?.Select(model => new BulletComponent() { bulletModel = model }).ToArray();
+
+        //private static ContactModel[]? Contacts = Utils.ReadJson<ContactModel[]>("Data/Contacts.json");
+        //public static ContactComponent ContactsComponent = new() { contactItems = Contacts };
+
+        ////public static BulletModel[]? WorkExperience => JsonSerializer.Deserialize<BulletModel[]>("WorkExperience.json");
+        //private static HighlightModel? Skills = Utils.ReadJson<HighlightModel>("Data/Skills.json");
+        //public static HighlightedItemsComponent SkillsComponent = new() { highlightItems = Skills };
+
+        //private static HighlightModel? Interests = Utils.ReadJson<HighlightModel>("Data/Interests.json");
+        //public static HighlightedItemsComponent InterestsComponent = new() { highlightItems = Interests };
+
+        //private static ListModel? Certificates = Utils.ReadJson<ListModel>("Data/Certificates.json");
+        //public static BasicListComponent CertificatesComponent = new() { BasicList = Certificates };
+
+        //private static ListModel? Projects = Utils.ReadJson<ListModel>("Data/Projects.json");
+        //public static BasicListComponent ProjectsComponent = new() { BasicList = Projects };
+
+        //static string fileName = ;
+    }
 
  }
 

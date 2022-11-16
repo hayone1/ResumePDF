@@ -1,4 +1,5 @@
-﻿using QuestPDF.Helpers;
+﻿using Newtonsoft.Json;
+using QuestPDF.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,6 +14,7 @@ namespace ResumePDF
     public record BasicItem(string Item, string Child);
     //public record ContactItem(string start, string end);
 
+    [JsonObject(ItemRequired = Required.Always)]
     public class BulletModelSimple
     {
         public string? Title { get; init; }
@@ -20,6 +22,8 @@ namespace ResumePDF
         public string? Paragraph { get; init; }
 
     }
+
+    //[JsonObject(ItemRequired = Required.Always)]
     public class BulletModel
     {
         //public string? Title { get; init; }
@@ -36,6 +40,12 @@ namespace ResumePDF
         public string[]? paragraphs { get; init; }
     }
 
+    [JsonObject(ItemRequired = Required.Always)]
+    public class BulletsModel
+    {
+        public string Title { get; init; } = string.Empty;
+        public BulletModel[] Bullets { get; init; }
+    }
 
     public class InvoiceModel
     {
@@ -74,6 +84,14 @@ namespace ResumePDF
         public string? IconLink { get; init; }
     }
 
+    [JsonObject(ItemRequired = Required.Always)]
+    public class ContactsModel
+    {
+        public string? Title { get; init; } = string.Empty;
+        public ContactModel[]? contacts { get; init; }
+    }
+
+    [JsonObject(ItemRequired = Required.Always)]
     public class HighlightModel
     {
         public string Title { get; init; } = "Skills";
@@ -88,11 +106,21 @@ namespace ResumePDF
         }
 
         }
-    
+
+    [JsonObject(ItemRequired = Required.Always)]
     public class ListModel
     {
         public string Title { get; init; } = "SKILLS";
         public BasicItem[]? ListItems { get; init; }
+    }
+
+    //Indicates if a Json conversion result to a class was successful on not
+    public class JsonConvertResult<T>
+    {
+        [Required]
+        public bool Success { get; set; } = false;
+        [Required]
+        public T? Result { get; set; }
     }
     
 
