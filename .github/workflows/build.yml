@@ -104,8 +104,8 @@ jobs:
         # artifacts: "./bin/Debug/net6.0/Resume.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
-        draft: true
-        prerelease: false
+        draft: false
+        prerelease: true
         generateReleaseNotes: true
         tag: ${{ github.ref }}
   
