@@ -1,9 +1,11 @@
 # QuestPDF RESUME DEMO
 
-A Showcase of QuestPdf features using features such as Row, Column, Decoration, Paging, Images, Tables, Textstyles etc...
+![Release workflow](https://github.com/hayone1/ResumePDF/actions/workflows/build.yml/badge.svg)
+
+A Showcase of [QuestPdf](https://www.questpdf.com/introduction) features using features such as Row, Column, Decoration, Paging, Images, Tables, Textstyles etc...
 
 ## Data Structure
-Data is separated into [header], [content] and [footer] and placed inside [Data] folder.
+Data is separated into [header](https://github.com/hayone1/ResumePDF/tree/master/Data/HeaderLeft), [content](https://github.com/hayone1/ResumePDF/tree/master/Data/ContentLeft) and [footer](https://github.com/hayone1/ResumePDF/tree/master/Data/Footer) and placed inside [Data](https://github.com/hayone1/ResumePDF/tree/master/Data) folder.
 
 - Header (HeaderLeft & HeaderRight) folder will use only the first (alphabetical) json in their folder. Preferably only use the `BasicBullet` and `ContactModel` Json Format in the Header Folders.
 
