@@ -13,4 +13,10 @@ var document = new InvoiceDocument();
 //document.GeneratePdf(filePath);
 document.ShowInPreviewer();
 
+// generate images as dynamic list of images
+//IEnumerable<byte[]> images = document.GenerateImages();
+
+// generate images and save them as files with provided naming schema
+//document.GenerateImages(i => $"Images/demo/page-{i}.png");
+
 //Process.Start("explorer.exe", filePath);    

@@ -188,7 +188,7 @@ namespace ResumePDF
 
                 //right side - the brief
                 row.RelativeItem()
-                   .Background(Colors.Grey.Lighten3)
+                //    .Background(Colors.Grey.Lighten3)
                    .Text(text =>
                    {
                        text.DefaultTextStyle(TypographyStyles.Normal);

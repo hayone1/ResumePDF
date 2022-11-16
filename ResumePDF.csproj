@@ -63,6 +63,9 @@
     <None Update="Fonts\Ubuntu\UFL.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Images\demo\email.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Images\email.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

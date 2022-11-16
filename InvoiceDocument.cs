@@ -30,9 +30,9 @@ namespace ResumePDF
             container.Page(page =>
             {
                 //page.Margin(10);
-                page.Header().Element(ComposeHeader);
-                page.Content().Element(ComposeContent);
-                page.Footer().Element(ComposeFooter);
+                page.Header().Background(Colors.White).Element(ComposeHeader);
+                page.Content().Background(Colors.White).Element(ComposeContent);
+                page.Footer().Background(Colors.White).Element(ComposeFooter);
                 //page.Footer().AlignCenter().Text(x =>
                 //{
                 //    x.CurrentPageNumber();
