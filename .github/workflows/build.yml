@@ -11,6 +11,8 @@ on:
     branches: [ main ]
     paths-ignore:
     - 'README.md'
+    tags:
+    - 'ResumePDF-v*'
 
 # Create an environment variable named DOTNET_VERSION
 # and set it as "6.0.x"
@@ -77,28 +79,35 @@ jobs:
       uses: thedoctor0/zip-release@main
       with:
         type: 'zip'
-        filename: 'Resume.zip'
+        filename: ${{ runner.os }}-Resume.zip
+        # filename: 'Resume.zip'
         directory: bin/Debug/net6.0
         # exclusions: '*.git* /*node_modules/* .editorconfig'
 
-    - name: See what's going on
-      run: pwd; ls -al; find .
+    - name: See what's going on in Directory
+      run:  |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+            Get-ChildItem -Recurse
+        else 
+            pwd; ls -al; find .
 
 
     - name: "Check file existence"
       uses: andstor/file-existence-action@v2
       with:
-        files: "ResumePDF.zip, Resume.zip"
+        files: ${{ runner.os }}-Resume.zip
+        # files: "./bin/Debug/net6.0/Resume.zip"
 
     - name: Upload Release
       uses: ncipollo/release-action@v1
       with:
-        name: "BuildRelease"
-        artifacts: "./bin/Debug/net6.0/Resume.zip"
+        # name: "BuildRelease"
+        artifacts: ${{ runner.os }}-Resume.zip
+        # artifacts: "./bin/Debug/net6.0/Resume.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
-        body: "Quest PDF"
         draft: true
         prerelease: false
+        generateReleaseNotes: true
         tag: ${{ github.ref }}
   
