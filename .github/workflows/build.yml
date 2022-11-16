@@ -94,14 +94,13 @@ jobs:
     - name: "Check file existence"
       uses: andstor/file-existence-action@v2
       with:
-        files: ${{ runner.os }}-Resume.zip
-        # files: "./bin/Debug/net6.0/Resume.zip"
+        files: ./bin/Debug/net6.0/${{ runner.os }}-Resume.zip
 
     - name: Upload Release
       uses: ncipollo/release-action@v1
       with:
         # name: "BuildRelease"
-        artifacts: ${{ runner.os }}-Resume.zip
+        artifacts: ./bin/Debug/net6.0/${{ runner.os }}-Resume.zip
         # artifacts: "./bin/Debug/net6.0/Resume.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
