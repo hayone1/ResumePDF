@@ -12,7 +12,7 @@ on:
     paths-ignore:
     - 'README.md'
     tags:
-    - 'ResumePDF-v*'
+    - 'v*'
 
 # Create an environment variable named DOTNET_VERSION
 # and set it as "6.0.x"
