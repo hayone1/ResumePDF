@@ -30,6 +30,9 @@
     <None Update="Data\ContentRight\4- FakeData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Data\Footer\Footer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Data\HeaderRight\2-Contacts - Copy.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

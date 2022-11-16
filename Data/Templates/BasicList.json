@@ -1,0 +1,15 @@
+{
+  "Title": "XX XX",
+  "ListItems": [
+    {
+      "Item": "XX | (mm/yyyy - mm/yyyy)",
+      "Child": "• xx yy zz"
+    },
+    {
+      "Item": "Any Text",
+      "Child": "You can use any text"
+    }
+
+  ]
+
+}

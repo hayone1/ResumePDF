@@ -64,6 +64,8 @@ namespace ResumePDF
             return success;
         }
 
+        public static T? ParseJson<T>(string fileName) =>
+            JsonConvert.DeserializeObject<T>(File.ReadAllText(@fileName));
         public static void ForEach<T>(this IEnumerable<T> list, System.Action<T> action)
         {
             foreach (T item in list)

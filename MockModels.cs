@@ -105,7 +105,7 @@ namespace ResumePDF
             set { Items[i] = value; }
         }
 
-        }
+    }
 
     [JsonObject(ItemRequired = Required.Always)]
     public class ListModel
@@ -122,7 +122,12 @@ namespace ResumePDF
         [Required]
         public T? Result { get; set; }
     }
-    
+
+    [JsonObject(ItemRequired = Required.Always)]
+    public class JsonString
+    {
+        public string Value { get; init; } = string.Empty;
+    }
 
 
 }

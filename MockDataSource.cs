@@ -113,6 +113,7 @@ namespace ResumePDF
 
         }
 
+
         //private static BulletModelSimple? Brief = Utils.ReadJson<BulletModelSimple>("Data/Brief.json");
         //public static BulletSimpleComponent BriefComponent = new BulletSimpleComponent() { SimpleBulletModel = Brief };
 

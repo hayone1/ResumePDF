@@ -218,57 +218,63 @@ namespace ResumePDF
             {
                 //each bullet data will take a row
                 foreach (var bulletModel in bulletsModel.Bullets)
-                { column.Item().ShowEntire().Element(container =>
-                {
-                    //each row has 2 columns | left(bullet) & right(text)
-                    container.Row(row =>
+                { 
+                    column.Item().ShowEntire().Element(CreateElement);
+                    
+                    void CreateElement (IContainer container)
                     {
-                        //left side - Bullet
-                        row.RelativeItem(leftRatio)
-                           //.AlignTop()
-                           //.DebugArea()
-                           .PaddingRight(LeftpaddingRight)
-                           .Height(LeftHeight)
-                           .Background(AccentColor);
-                        //.Border(1)
+                        {
+                        //each row has 2 columns | left(bullet) & right(text)
+                        container.Row(row =>
+                        {
+                            //left side - Bullet
+                            row.RelativeItem(leftRatio)
+                            //.AlignTop()
+                            //.DebugArea()
+                            .PaddingRight(LeftpaddingRight)
+                            .Height(LeftHeight)
+                            .Background(AccentColor);
+                            //.Border(1)
 
-                        //right side - Text
-                        row.RelativeItem()
-                           //.Background(Colors.Grey.Lighten2)
-                           .Text(text =>
-                           {
-                               text.DefaultTextStyle(TypographyStyles.Normal);
-                               text.AlignLeft();
-                               text.ParagraphSpacing(1);
-                               //headline
-                               text.Line(bulletModel.Qualification).Style(TypographyStyles.Headline);
-                               //headline2
-                               text.Line(bulletModel.Company).Style(TypographyStyles.Headline2);
+                            //right side - Text
+                            row.RelativeItem()
+                            //.Background(Colors.Grey.Lighten2)
+                            .Text(text =>
+                            {
+                                text.DefaultTextStyle(TypographyStyles.Normal);
+                                text.AlignLeft();
+                                text.ParagraphSpacing(1);
+                                //headline
+                                text.Line(bulletModel.Qualification).Style(TypographyStyles.Headline);
+                                //headline2
+                                text.Line(bulletModel.Company).Style(TypographyStyles.Headline2);
 
-                               text.Span($"{bulletModel.Duration.start} - {bulletModel.Duration.end}")
-                                   .Style(TypographyStyles.AccentStyle);
-                               text.Span(" | ");
-                               //text.Span("                                                  ");
-                               text.Span(bulletModel.Location)
-                                   .Style(TypographyStyles.AccentStyle);
-                               text.EmptyLine();
-                               text.Line(bulletModel.SubTitle)
-                                   .Style(TypographyStyles.AccentStyle2);
+                                text.Span($"{bulletModel.Duration.start} - {bulletModel.Duration.end}")
+                                    .Style(TypographyStyles.AccentStyle);
+                                text.Span(" | ");
+                                //text.Span("                                                  ");
+                                text.Span(bulletModel.Location)
+                                    .Style(TypographyStyles.AccentStyle);
+                                text.EmptyLine();
+                                text.Line(bulletModel.SubTitle)
+                                    .Style(TypographyStyles.AccentStyle2);
 
-                               //inner bullets paragraphs
-                               foreach (var paragraph in bulletModel.paragraphs)
-                               {
-                                   //text.Span("◉ ").FontColor(AccentColor);
-                                   text.Span("• ").FontColor(AccentColor);
-                                   //text.Span(" ").Style(TypographyStyles.AccentStyle);
-                                   text.Span(paragraph).FontSize(9.5f);
-                                   text.EmptyLine();
-                               }
+                                //inner bullets paragraphs
+                                foreach (var paragraph in bulletModel.paragraphs)
+                                {
+                                    //text.Span("◉ ").FontColor(AccentColor);
+                                    text.Span("• ").FontColor(AccentColor);
+                                    //text.Span(" ").Style(TypographyStyles.AccentStyle);
+                                    text.Span(paragraph).FontSize(9.5f);
+                                    text.EmptyLine();
+                                }
 
-                           });
-                    });
-                }); 
+                            });
+                        });
+                    }
+                    }
                 }
+
 
             });
 

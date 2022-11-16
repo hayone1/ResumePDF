@@ -32,10 +32,7 @@ namespace ResumePDF
                 //page.Margin(10);
                 page.Header().Element(ComposeHeader);
                 page.Content().Element(ComposeContent);
-
-                page.Footer().AlignCenter()
-                             .Text("References - available on request")
-                             .Style(TypographyStyles.Normal);
+                page.Footer().Element(ComposeFooter);
                 //page.Footer().AlignCenter().Text(x =>
                 //{
                 //    x.CurrentPageNumber();
@@ -213,6 +210,14 @@ namespace ResumePDF
                          //Text at the bottom 
                      });
 
+        }
+
+        void ComposeFooter(IContainer container)
+        {
+            var footerString = Utils.ParseJson<JsonString>("Data/Footer/Footer.json");
+                container.AlignCenter()
+                         .Text(footerString?.Value)
+                         .Style(TypographyStyles.Normal);
         }
         void ComposeBrokenContent(IContainer container)
         {
