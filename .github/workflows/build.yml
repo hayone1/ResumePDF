@@ -70,13 +70,33 @@ jobs:
     - name: Upload buid Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: Application Artifact  # will be zipped automatically
+        name: ResumePDF  # will be zipped automatically
         path: bin/release/net6.0/
-      # Use always() to always run this step to publish test results when there are test failures
-    - name: Release the artifacts
-      uses: skx/github-action-publish-binaries@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Install zip
+      uses: montudor/action-zip@v1
+
+    - name: Zip output
+      run: zip -qq -r resume.zip bin/release/net5.0
+
+    - name: See what's going on
+      run: pwd; ls -al; find .
+
+
+    - name: "Check file existence"
+      uses: andstor/file-existence-action@v2
       with:
-        args: 'Release-*'
+        files: "ResumePDF.zip, resume.zip"
+
+    - name: File exists
+      if: steps.check_files.outputs.files_exists == 'true'
+      # Only runs if all of the files exists
+      run: echo All files exists!
+    
+    # - name: Release the artifacts
+    #   uses: skx/github-action-publish-binaries@master
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     args: 'Release-*'
   
