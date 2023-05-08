@@ -18,9 +18,6 @@
     <None Update="Data\ContentLeft\FakeData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Data\ContentRight\3-Projects.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Data\ContentRight\2-Certificates.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

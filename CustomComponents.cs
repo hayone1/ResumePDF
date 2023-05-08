@@ -156,9 +156,9 @@ namespace ResumePDF
 
     internal class BulletBase
     {
-        protected readonly float leftRatio = 0.15f;   //ratio the left side of the bulleted component takes
-        protected readonly float LeftpaddingRight = 12f;    //right padding for the left column
-        protected const float LeftHeight = 40f; //height of bullet that is on the left side
+        protected const float leftRatio = 0.08f;   //ratio the left side of the bulleted component takes
+        protected const float LeftpaddingRight = 5f;    //right padding for the left column
+        protected const float LeftHeight = 35f; //height of bullet that is on the left side
         public string PrimaryColor { get; init; } = Colors.Black;
         public string AccentColor { get; init; } = Colors.Blue.Accent2;
 
@@ -178,16 +178,19 @@ namespace ResumePDF
             container.Row(row =>
             {
                 //compose the square to represent the bullet
-                row.RelativeItem(leftRatio)
+                row.RelativeItem(leftRatio) 
+                    //.Border(1)
                    //.AlignTop()
                    //.DebugArea()
                    .PaddingRight(LeftpaddingRight)
                    //.PaddingTop(20)
-                   .Height((float)LeftHeight)
+                   .Height(LeftHeight)
                    .Background(PrimaryColor);
 
                 //right side - the brief
                 row.RelativeItem()
+                    .MaxHeight(130)
+                    //.Border(1)
                 //    .Background(Colors.Grey.Lighten3)
                    .Text(text =>
                    {
@@ -210,6 +213,7 @@ namespace ResumePDF
     {
         public string AccentColor { get; init; } = Colors.Blue.Accent2;
 
+        //data model for bullet item
         public BulletsModel? bulletsModel { get; init; }
         public void Compose(IContainer container)
         {
@@ -227,7 +231,7 @@ namespace ResumePDF
                         //each row has 2 columns | left(bullet) & right(text)
                         container.Row(row =>
                         {
-                            //left side - Bullet
+                            //left side - the Bullet itself
                             row.RelativeItem(leftRatio)
                             //.AlignTop()
                             //.DebugArea()
@@ -241,18 +245,18 @@ namespace ResumePDF
                             //.Background(Colors.Grey.Lighten2)
                             .Text(text =>
                             {
-                                text.DefaultTextStyle(TypographyStyles.Normal);
+                                text.DefaultTextStyle(TypographyStyles.Normal.FontSize(12));
                                 text.AlignLeft();
                                 text.ParagraphSpacing(1);
                                 //headline
                                 text.Line(bulletModel.Qualification).Style(TypographyStyles.Headline);
                                 //headline2
                                 text.Line(bulletModel.Company).Style(TypographyStyles.Headline2);
-
+                                //duration
                                 text.Span($"{bulletModel.Duration.start} - {bulletModel.Duration.end}")
                                     .Style(TypographyStyles.AccentStyle);
                                 text.Span(" | ");
-                                //text.Span("                                                  ");
+                                //location
                                 text.Span(bulletModel.Location)
                                     .Style(TypographyStyles.AccentStyle);
                                 text.EmptyLine();
@@ -265,7 +269,8 @@ namespace ResumePDF
                                     //text.Span("◉ ").FontColor(AccentColor);
                                     text.Span("• ").FontColor(AccentColor);
                                     //text.Span(" ").Style(TypographyStyles.AccentStyle);
-                                    text.Span(paragraph).FontSize(9.5f);
+                                    text.Span(paragraph)
+                                        .Style(TypographyStyles.Normal.FontSize(10.5f));
                                     text.EmptyLine();
                                 }
 
@@ -291,7 +296,7 @@ namespace ResumePDF
         {
             container.ContentFromRightToLeft()
                      //.Border(1)
-                     .Height(150)
+                     //.Height(150)
                      .Table(table =>
                      {
                          table.ColumnsDefinition(columns =>
@@ -434,7 +439,7 @@ namespace ResumePDF
                  {
                      column.Item().ShowEntire().Text($"{listItem.Item}\n" +
                                            listItem.Child)
-                                               .Style(TypographyStyles.Normal.FontSize(10));
+                                               .Style(TypographyStyles.Normal.FontSize(10.5f));
                      //column.Item().DebugArea()
                      //             .Text(text =>
                      //{

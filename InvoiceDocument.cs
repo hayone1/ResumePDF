@@ -9,7 +9,8 @@ namespace ResumePDF
     {
         public InvoiceModel? Model { get; } = default;
         public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
-        public float LeftRatio = 1.1f;  //the ratio of the right side to the total space rg. 1.1/2
+        public float LeftRatio = 1.15f;  //the ratio of the right side to the total space rg. 1.1/2
+        public float headerMaxHeight = 135f;  //the ratio of the right side to the total space rg. 1.1/2
         string[] fonts => Directory.GetFiles(@"Fonts\Ubuntu\", "*.ttf");    //get font file names
 
         public InvoiceDocument()
@@ -51,23 +52,24 @@ namespace ResumePDF
 
             void SingleHeader(IContainer container)
             {
-                container.Height(170)
+                container.MaxHeight(headerMaxHeight)
                          //.Background(Colors.Grey.Lighten2)
-                         .PaddingTop(10)
+                         .PaddingTop(5)
                          .PaddingRight(15)
                          .Row(row =>
                         {
                             //Left Side - Resume Brief
                             row.RelativeItem(LeftRatio)
+                               //.Border(1)
                                .Component(DataSource.LeftHeader);
 
                             //row.ConstantItem(100).Height(50).Placeholder();
                             //Right Side - Contact information
                             row.RelativeItem()
-                                //.Height(100)
-                                .AlignRight()
+                               //.Border(1)
+                               .AlignRight()
                                 //.Component(new LoremPicsum(false));
-                                .Component(DataSource.RightHeader);
+                               .Component(DataSource.RightHeader);
 
                         });
 
@@ -82,32 +84,40 @@ namespace ResumePDF
         void ComposeContent(IContainer container)
         {
             //container.PaddingVertical(10)
-            const float left_RightPadding = 10f;
-            const float generalPadding = 10f;
+            const float rightPadding = -120f;
+            const float left_RightPadding = 100f;
+            const float left_LeftPadding = -16;
+            const float generalPadding = 5f;
             
             container.BorderTop(1)
-                     //.Height(50)
+                     //.Height(695)
+                     .Border(1)
                      //.Background(Colors.Grey.Lighten3)
                      //.AlignCenter()
                      .PaddingTop(generalPadding)
                      //.AlignMiddle()
                      .Row(row =>
                      {
+                         //ENSURE SPACE BEtween columns
+                         row.Spacing(30
+                             );
                          //Left side of Resume Content
                          row.RelativeItem(LeftRatio)
-                            .PaddingRight(generalPadding)
+                            //.Border(1)
+                            .PaddingRight(rightPadding)
                             //.Background(Colors.Grey.Lighten1)
                             .Column(column =>
                             {
-                                column.Spacing(generalPadding);
+                                column.Spacing(-2);
                                 foreach (var leftItem in DataSource.ReadLeftContent())
                                 {
-                                    //For Education - Row 1
                                     column.Item().Decoration(decoration =>
                                     {
                                         //title
                                         decoration.Before()
-                                                  .PaddingRight(left_RightPadding).Text("            " + leftItem.Title)
+                                                  //.PaddingRight(left_RightPadding)
+                                                  .PaddingLeft(left_LeftPadding)
+                                                  .Text("            " + leftItem.Title)
                                                   .Style(TypographyStyles.Title2);
                                         //body
                                         decoration.Content()
@@ -167,6 +177,7 @@ namespace ResumePDF
                                                   .Style(TypographyStyles.Title2);
                                         //body
                                         decoration.Content()
+                                                  .ShowOnce()
                                                   .Component(rightItem.component);
                                     });
 
@@ -216,6 +227,7 @@ namespace ResumePDF
         {
             var footerString = Utils.ParseJson<JsonString>("Data/Footer/Footer.json");
                 container.AlignCenter()
+                         //.Border(1)
                          .Text(footerString?.Value)
                          .Style(TypographyStyles.Normal);
         }

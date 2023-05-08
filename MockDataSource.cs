@@ -13,7 +13,7 @@ namespace ResumePDF
 {
     internal static class MockDataSource
     {
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
 
         public static InvoiceModel GetInvoiceDetails()
         {
@@ -74,8 +74,8 @@ namespace ResumePDF
                 //add component to collection if it is not null
                 if (Utils.JsonToComponent(file) is IComponent component && component is not null)
                 {
-                    Console.WriteLine("Null check: " + (component == null));
-                    Console.WriteLine("Null check is: " + (component is null));
+                    //Console.WriteLine("Component Null check: " + (component == null));
+                    Console.WriteLine("Component Null check is: " + (component is null));
                     var JsonName = file.BetweenStrings("-", ".json");
                     Console.WriteLine("Left Json Name : " + JsonName);
                     yield return (JsonName, component);
@@ -98,7 +98,7 @@ namespace ResumePDF
                 //add component to collection if it is not null
                 if (Utils.JsonToComponent(file) is IComponent component && component is not null)
                 {
-                    Console.WriteLine("Right Null check: " + (component == null));
+                    //Console.WriteLine("Right Null check: " + (component == null));
                     Console.WriteLine("Right Null check is: " + (component is null));
                     var JsonName = file.BetweenStrings("-", ".json");
                     Console.WriteLine("Right Json Name : " + JsonName);

@@ -4,7 +4,7 @@ using QuestPDF.Previewer;
 using ResumePDF;
 using System.Diagnostics;
 
-Console.WriteLine("Hello, World!");
+Console.WriteLine("Previewer Starting...");
 
 //var filePath = "Mockinvoice.pdf";
 
